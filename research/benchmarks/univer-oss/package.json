@@ -1,0 +1,22 @@
+{
+  "name": "univer-eval",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@univerjs/core": "^1.4.0",
+    "@univerjs/docs": "^1.4.0",
+    "@univerjs/engine-formula": "^1.4.0",
+    "@univerjs/engine-render": "^1.4.0",
+    "@univerjs/sheets": "^1.4.0",
+    "@univerjs/sheets-formula": "^1.4.0",
+    "@univerjs/sheets-numfmt": "^1.4.0"
+  }
+}
