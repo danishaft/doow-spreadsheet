@@ -1,139 +1,125 @@
-# FOUNDATION — Vision, Principles, Scope
+# FOUNDATION — Agent-native Spreadsheet SDK
 
-> Status: **Draft v0 — not approved.** Gate 1 artifact.
-> Basis: direction set 2026-11-13/14 — compete with the new-age spreadsheets
-> (Quadratic, Equals, Rows, Univer) by doing what they do, better.
-> It is **both an app and an SDK**, free for people and developers to use,
-> embed and share.
-> Owner: TBD · Approved by: TBD · Last updated: 2026-11-14
->
-> Items marked **A1–A5** are assumptions I made to unblock drafting. Correct
-> them; nothing here is approved.
+> Status: Draft v2 — rewrite approved by the user; review pending.
+> Owner: TBD · Updated: 2026-11-17
 
-## 1. Vision
+## 1. Product thesis
 
-A spreadsheet **app and SDK** where a team of agents does the work and a human
-can verify every number. Rust-fast calculation, Excel-faithful results,
-real-time collaboration — free for people and developers to use, embed and
-self-host.
+Build a spreadsheet SDK in which humans and agents can inspect, edit,
+calculate, and develop workbook changes through a shared runtime.
 
-## 2. Problem
+The SDK combines a capable embeddable editor, headless operation, and
+a built-in agent workspace harness. Agents work through structured
+spreadsheet controls and versioned workspaces, with Git-style
+branching, change inspection, and integration workflows.
 
-- **Incumbent spreadsheets (Excel, Sheets):** one assistant, one conversation.
-  They are not built for several agents working a workbook, and their engines
-  are closed and slow at scale.
-- **AI-native apps (Quadratic, Equals, Rows):** strong AI and data connections,
-  but closed. Trust is post-hoc lineage ("where did this come from"), not
-  computation evidence. Equals is priced for enterprises; Quadratic is
-  source-available at best.
-- **Agent harnesses (Univer):** the closest to our vision, but the open core is
-  TypeScript-centric, the OSS formula engine is admitted to be slower than their
-  commercial one, and XLSX/Server/AI modules are paid. Agent changes are isolated
-  drafts merged by humans, not verified computation.
-- **No one combines** speed, Excel fidelity, multi-agent execution, verifiable
-  results and open self-hosting. That combination is the product.
+Developers bring their models, context, and application logic. The SDK
+supplies the spreadsheet environment those applications operate on.
 
-## 3. Target users
+Rust calculation and WebGL graphics are the intended technical
+direction for efficient computation and responsive interaction.
+Detailed architecture remains subject to design and validation.
 
-**A1 — Primary:** finance, operations and analytics teams doing multi-step work
-where a wrong number is costly and auditable results matter.
+## 2. Primary customer and problem
 
-**A2 — Primary, equal weight:** developers and product teams embedding an
-agentic spreadsheet into their own products. The SDK is a first-class product,
-not a by-product of the app.
+The primary customer is an engineering team building a spreadsheet
+product used by humans and agents.
 
-Excluded for now: casual personal use, docs/slides suites, BI dashboard
-replacement.
+That team needs to provide ordinary spreadsheet editing while giving
+agents reliable ways to understand workbook structure, change it,
+observe calculation results, and coordinate parallel work.
 
-## 4. Differentiation — three bets, everything else at parity
+These responsibilities span calculation semantics, editing operations,
+task state, document revisions, conflict handling, and recovery.
+When they are assembled inconsistently, developers carry the
+integration burden and users encounter unpredictable behavior.
 
-**B1. Engine.** A **Rust-first core end to end** — engine, harness and headless
-runtime — not a Rust formula component bolted onto a TypeScript stack. Fast at
-1M+ formulas, Excel-faithful, proven by an executable corpus. Speed is measured
-head-to-head, not claimed.
+Our opportunity is to provide these capabilities as a coherent,
+reusable SDK that developers can embed and extend.
 
-**B2. Multi-agent harness.** Named agent roles, isolated drafts, review/merge,
-live co-editing with per-agent attribution. Agents are first-class clients, not
-a chatbot sidebar — and the harness lives in the same Rust core, usable from the
-app and the SDK.
+## 3. Product position
 
-**B3. Verifiable computation.** Every value carries evidence: `computed`,
-`imported_cached`, `refused_unsupported`, `mismatch`. Every agent run is
-replayable (deterministic clock/seed), every change attributable and reversible.
-We refuse rather than guess.
+The product competes as spreadsheet infrastructure.
 
-Supporting: open core, self-host, no watermark; open XLSX interchange.
+SpreadJS establishes the baseline for a capable, customizable
+spreadsheet SDK. Univer establishes a relevant baseline for
+extensibility and agent workspace workflows. Other projects inform
+specific architecture and compatibility questions documented in
+research/competitive-landscape.md.
 
-**B4. Free distribution.** The app and the SDK are free for people and
-developers to use and share. Univer charges for XLSX, Server SDK and pro AI
-modules; Quadratic is closed; Rows gates AI tasks. We compete on access: one
-core, exposed two ways, free at the point of use.
+Our defining bet is that human editing, calculation, and versioned
+agent work should be integrated around consistent workbook behavior.
+This should give developers stronger control over automation and
+parallel work while preserving a complete human editing experience.
 
-## 5. Product principles
+The intended advantage includes lower integration effort, useful
+agent controls, dependable change management, and better performance
+on representative workloads. These advantages require evidence from
+working integrations and comparative measurements.
 
-1. Correctness before features.
-2. Every agent action is attributable, reviewable and reversible.
-3. Evidence over claims; `test-corpus/` is the executable spec.
-4. Measure performance; "Rust" is not a performance claim.
-5. Open by default; no commercial trap on core interchange.
-6. One beachhead, then breadth.
+## 4. Product principles
 
-## 6. Scope
+1. Humans and agents operate through consistent spreadsheet semantics.
+   Their interfaces may differ; the meaning of an operation stays coherent.
 
-**MVP in:** grid and core formulas; XLSX read + CSV import (**A3**); multi-agent
-drafts and review; real-time collaboration with attribution; audit/replay;
-self-hostable core.
+2. Agent work is observable and controlled.
+   Tasks, changes, calculation state, and conflicts can be inspected.
+   The host application determines permissions and acceptance policies.
 
-**SDK in:** headless runtime, embeddable grid, typed API, WASM/npm packages and
-Rust crates, examples and docs. Same core as the app — no separate engine.
+3. Parallel work preserves independent progress.
+   Versioned workspaces support attributable changes and explicit
+   integration when other work has intervened.
 
-**Out:** docs/slides/BI, VBA/macros, plugin marketplace, native mobile, full
-connector catalogue.
+4. Spreadsheet quality remains fundamental.
+   Human interaction, calculation correctness, and document handling
+   receive the same attention as automation.
 
-**Deferred:** XLSX write-back fidelity, data connectors, billing/plans,
-marketplace.
+5. Developers retain control.
+   Model selection, context, domain logic, and application policy are
+   supplied through supported integration boundaries.
 
-**A4** — concurrency starts with isolated agent drafts + human merge; live
-multi-agent editing on the same cells is a later differentiator.
+6. Performance and compatibility are demonstrated.
+   Claims are tied to defined behavior and representative workloads.
 
-**A5** — connectors are post-MVP; the first wedge is calculation + agents, not
-data integration.
+## 5. Strategic boundaries
 
-**A6** — licensing: free for people and developers to use and share;
-open-source vs source-available is not yet decided. No paid tiers at launch;
-monetisation is deferred (managed hosting/support later, not a launch feature).
+This project delivers the SDK: its editor, headless runtime, agent
+workspace capabilities, public interfaces, documentation, and examples.
 
-## 7. Success metrics (proposed targets)
+Standalone consumer applications and domain-specific products are
+outside this project's scope. Example hosts demonstrate integration.
 
-- 1M-formula first calculation under 1.5 s on reference hardware; p95 recalc of
-  a broad 1M-cell invalidation under 150 ms.
-- ≥99% fidelity on a 1,000-vector corpus covering the target function set.
-- 100% of agent-produced values carry an evidence label; 100% of agent changes
-  attributable and replayable.
-- First successful agent task within 10 minutes of opening a workbook.
-- SDK: package install to an embedded working sheet in under 15 minutes; weekly
-  embeds, downloads and docs-to-first-API-call completion.
-- Weekly active teams, retained agent tasks per team.
+The SDK owns reusable spreadsheet and agent-workspace mechanics.
+Host applications own their business meaning and agent strategies.
 
-## 8. Terminology
+The SDK is intended to be free to use, embed, and share. Exact license,
+source-access, and distribution terms remain to be settled.
 
-- **Agent** — a scoped actor with identity, permissions and a role.
-- **Core** — the shared Rust engine + agent harness used by both the app and the
-  SDK.
-- **SDK** — the embeddable, headless form of the core: typed API, WASM/npm
-  packages and Rust crates, usable without our UI.
-- **Draft** — an isolated set of agent changes before merge.
-- **Evidence label** — how a value was obtained (`computed`, `imported_cached`,
-  `refused_unsupported`, `mismatch`).
-- **Replay** — deterministic re-execution of an agent run against the same
-  inputs and clock/seed.
-- **Corpus** — executable correctness vectors in `test-corpus/`.
+Release features and compatibility profiles belong in PRD.md.
+Implementation choices belong in SYSTEM_DESIGN.md and ADRs.
 
-## Approval
+## 6. Outcomes that show the product is working
 
-- [ ] Problem and users agreed
-- [ ] Differentiation agreed
-- [ ] MVP boundary agreed
-- [ ] Success metrics agreed
-- [ ] App + SDK, free distribution confirmed
-- [ ] Assumptions A1–A6 confirmed or corrected
+- Engineering teams integrate the SDK into real products and use its
+  documented interfaces for both human editing and automation.
+- Humans complete useful spreadsheet work while agent tasks execute.
+- Agents understand relevant workbook state, make changes, calculate,
+  and inspect results through structured controls.
+- Parallel tasks produce useful, attributable changes that can be
+  integrated with explicit handling of conflicts and stale inputs.
+- Developers recover interrupted work and understand failed operations.
+- Comparative evidence demonstrates an advantage in developer effort,
+  interaction, calculation, memory use, or agent task execution.
+
+Numeric targets and acceptance conditions belong in the PRD.
+
+## 7. Assumptions to validate
+
+- Engineering teams value an integrated spreadsheet and agent-workspace
+  SDK enough to adopt it over existing alternatives.
+- Our execution and graphics architecture can deliver meaningful
+  improvements while meeting required spreadsheet behavior.
+- The compatibility and customization needed by early adopters are
+  achievable within the product's development capacity.
+- Distribution terms can fulfill the commitment to free use,
+  embedding, and sharing.
